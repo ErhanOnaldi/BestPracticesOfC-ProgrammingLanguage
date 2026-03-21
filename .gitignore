@@ -1,0 +1,163 @@
+## ==============================================
+##  .gitignore — .NET / N-Layer Clean Architecture
+##  IDE: JetBrains Rider
+## ==============================================
+
+# -----------------------------------------------
+#  Build / Output
+# -----------------------------------------------
+[Bb]in/
+[Oo]bj/
+[Oo]ut/
+[Ll]og/
+[Ll]ogs/
+[Bb]uild[Ll]og.*
+
+# -----------------------------------------------
+#  NuGet
+# -----------------------------------------------
+*.nupkg
+*.snupkg
+**/[Pp]ackages/*
+!**/[Pp]ackages/build/
+!**/[Pp]ackages/*.props
+!**/[Pp]ackages/*.targets
+
+# -----------------------------------------------
+#  .NET / MSBuild
+# -----------------------------------------------
+project.lock.json
+project.fragment.lock.json
+artifacts/
+*.user
+*.dbmdl
+*.jfm
+*.pfx
+*.publishsettings
+orleans.codegen.cs
+Generated_Code/
+
+# -----------------------------------------------
+#  User-specific / Local settings
+# -----------------------------------------------
+*.rsuser
+*.suo
+*.userosscache
+*.sln.docstates
+*.userprefs
+mono_crash.*
+
+# -----------------------------------------------
+#  Visual Studio cache / options
+# -----------------------------------------------
+.vs/
+*.csproj.user
+*.vspx
+*.sap
+
+# -----------------------------------------------
+#  JetBrains Rider
+# -----------------------------------------------
+.idea/
+*.sln.iml
+
+# -----------------------------------------------
+#  ReSharper
+# -----------------------------------------------
+_ReSharper*/
+*.[Rr]e[Ss]harper
+*.DotSettings.user
+
+# -----------------------------------------------
+#  Entity Framework Migrations (keep in VCS)
+#  — listed here only as a reminder NOT to ignore
+# -----------------------------------------------
+
+# -----------------------------------------------
+#  Test Results
+# -----------------------------------------------
+[Tt]est[Rr]esult*/
+[Bb]uild[Ll]og.*
+*.VisualState.xml
+TestResult.xml
+nunit-*.xml
+coverage*.xml
+coverage*.json
+*.coveragexml
+*.coverage
+*.coveragexml
+lcov.info
+
+# -----------------------------------------------
+#  Code Coverage (Coverlet / dotCover / etc.)
+# -----------------------------------------------
+coveragereport/
+CodeCoverage/
+*.dcvr
+*.dotCover
+
+# -----------------------------------------------
+#  Publish / Deploy
+# -----------------------------------------------
+*.Publish.xml
+PublishScripts/
+publish/
+
+# -----------------------------------------------
+#  SQL Server files
+# -----------------------------------------------
+*.mdf
+*.ldf
+*.ndf
+
+# -----------------------------------------------
+#  SQLite
+# -----------------------------------------------
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3
+
+# -----------------------------------------------
+#  OS-generated files
+# -----------------------------------------------
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# -----------------------------------------------
+#  Secrets / Environment
+# -----------------------------------------------
+appsettings.Development.json
+appsettings.Local.json
+appsettings.*.local.json
+*.env
+.env
+.env.*
+!.env.example
+secrets.json
+
+# -----------------------------------------------
+#  Docker (optional — keep docker-compose in VCS)
+# -----------------------------------------------
+docker-compose.override.yml
+
+# -----------------------------------------------
+#  Miscellaneous
+# -----------------------------------------------
+*.tmp
+*.bak
+*.swp
+*~
+*.cache
+*.log
+launchSettings.json
+BundleArtifacts/
+BenchmarkDotNet.Artifacts/
+StyleCopReport.xml
