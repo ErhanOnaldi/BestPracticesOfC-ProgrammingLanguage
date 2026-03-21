@@ -1,0 +1,3 @@
+namespace NLayerCleanArchitecture.Repository;
+
+public struct RepositoryAssembly;
