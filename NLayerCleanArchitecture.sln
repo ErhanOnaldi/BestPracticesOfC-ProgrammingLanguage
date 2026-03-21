@@ -1,8 +1,28 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NLayerCleanArchitecture.Service", "NLayerCleanArchitecture.Service\NLayerCleanArchitecture.Service.csproj", "{756EEED7-E0B6-4A18-A92E-D4B5EE51A7A2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NLayerCleanArchitecture.Repository", "NLayerCleanArchitecture.Repository\NLayerCleanArchitecture.Repository.csproj", "{ED6BEB1F-8028-4DD1-91A1-B8135D782BB4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NLayerCleanArchitecture.API", "NLayerCleanArchitecture.API\NLayerCleanArchitecture.API.csproj", "{A7EA191A-77CB-4EAF-9A8E-A229C6D8A073}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{756EEED7-E0B6-4A18-A92E-D4B5EE51A7A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{756EEED7-E0B6-4A18-A92E-D4B5EE51A7A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{756EEED7-E0B6-4A18-A92E-D4B5EE51A7A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{756EEED7-E0B6-4A18-A92E-D4B5EE51A7A2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ED6BEB1F-8028-4DD1-91A1-B8135D782BB4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED6BEB1F-8028-4DD1-91A1-B8135D782BB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED6BEB1F-8028-4DD1-91A1-B8135D782BB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED6BEB1F-8028-4DD1-91A1-B8135D782BB4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A7EA191A-77CB-4EAF-9A8E-A229C6D8A073}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7EA191A-77CB-4EAF-9A8E-A229C6D8A073}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7EA191A-77CB-4EAF-9A8E-A229C6D8A073}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7EA191A-77CB-4EAF-9A8E-A229C6D8A073}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

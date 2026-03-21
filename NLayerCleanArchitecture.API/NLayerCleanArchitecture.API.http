@@ -1,0 +1,6 @@
+@NLayerCleanArchitecture.API_HostAddress = http://localhost:5140
+
+GET {{NLayerCleanArchitecture.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
