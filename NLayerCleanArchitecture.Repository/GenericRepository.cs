@@ -5,6 +5,7 @@ namespace NLayerCleanArchitecture.Repository;
 
 public class GenericRepository<T>(AppDbContext dbContext):IGenericRepository<T> where T : class
 {
+    protected readonly AppDbContext DbContext = dbContext;
     private readonly DbSet<T> _dbSet = dbContext.Set<T>();
     
     public IQueryable<T> GetAll() => _dbSet.AsQueryable().AsNoTracking();
