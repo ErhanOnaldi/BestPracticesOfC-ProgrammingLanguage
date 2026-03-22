@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace NLayerCleanArchitecture.Repository;
+namespace NLayerCleanArchitecture.Repository.Products;
 
 public class ProductConfiguration : IEntityTypeConfiguration<Product>
 {

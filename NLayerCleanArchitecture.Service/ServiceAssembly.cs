@@ -1,3 +1,3 @@
-namespace ClassLibrary1;
+namespace NLayerCleanArchitecture.Service;
 
 public struct ServiceAssembly;

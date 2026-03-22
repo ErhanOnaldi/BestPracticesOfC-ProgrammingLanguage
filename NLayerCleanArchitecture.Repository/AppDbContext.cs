@@ -1,5 +1,6 @@
 using System.Reflection;
 using Microsoft.EntityFrameworkCore;
+using NLayerCleanArchitecture.Repository.Products;
 
 namespace NLayerCleanArchitecture.Repository;
 
