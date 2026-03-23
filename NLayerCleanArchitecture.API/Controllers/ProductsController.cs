@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using NLayerCleanArchitecture.Service.Products;
 
+//Endpoint name api/products şeklinde olmalı.
 namespace NLayerCleanArchitecture.API.Controllers;
 
 public class ProductsController(IProductService productService) : CustomBaseController

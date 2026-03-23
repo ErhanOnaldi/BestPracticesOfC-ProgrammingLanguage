@@ -48,7 +48,7 @@ public class ProductService(IProductRepository productRepository, IUnitOfWork un
         };
         await productRepository.AddAsync(product);
         await unitOfWork.SaveChangesAsync();
-        return ServiceResult<ProductCreateResponseDto>.Success(new  ProductCreateResponseDto(product.Id));
+        return ServiceResult<ProductCreateResponseDto>.Success(new ProductCreateResponseDto(product.Id), HttpStatusCode.Created);
     }
 
     public async Task<ServiceResult> UpdateProductAsync(int id, ProductUpdateRequestDto productUpdateRequestDto)
@@ -62,7 +62,7 @@ public class ProductService(IProductRepository productRepository, IUnitOfWork un
         product.Price = productUpdateRequestDto.Price;
         product.Description = productUpdateRequestDto.Description;
         product.Stock = productUpdateRequestDto.Stock;
-        return ServiceResult.Success();
+        return ServiceResult.Success(HttpStatusCode.NoContent);
     }
 
     public async Task<ServiceResult> DeleteProductAsync(int id)
@@ -74,6 +74,6 @@ public class ProductService(IProductRepository productRepository, IUnitOfWork un
         }
         productRepository.Delete(product);
         await unitOfWork.SaveChangesAsync();
-        return ServiceResult.Success();
+        return ServiceResult.Success(HttpStatusCode.NoContent);
     }
 }
