@@ -4,5 +4,5 @@ namespace NLayerCleanArchitecture.Service.Products;
 
 public interface IProductService
 {
-    Task<ServiceResult<List<Product>>> GetMostExpensiveProductsAsync(int count);
+    Task<ServiceResult<List<ProductResponseDto>>> GetMostExpensiveProductsAsync(int count);
 }

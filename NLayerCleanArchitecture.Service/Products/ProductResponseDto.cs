@@ -1,10 +1,10 @@
 namespace NLayerCleanArchitecture.Service.Products;
 
-public class ProductResponseDto //mümjün olduğunca immutable olmalı
-{
-    public int Id { get; set; }
-    public string Name { get; set; } = null!;
-    public string? Description { get; set; }
-    public decimal Price { get; set; }
-    public int Stock { get; set; }
-}
+public record ProductResponseDto(int Id, string Name, string? Description, decimal Price, int Stock);
+//mümjün olduğunca immutable olmalı
+
+    // public int Id { get; init; }
+    // public string Name { get; init; } = null!;
+    // public string? Description { get; init; }
+    // public decimal Price { get; init; }
+    // public int Stock { get; init; }

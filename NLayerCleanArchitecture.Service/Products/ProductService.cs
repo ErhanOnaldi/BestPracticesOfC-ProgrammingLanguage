@@ -1,23 +1,70 @@
 using System.Net;
+using NLayerCleanArchitecture.Repository;
 using NLayerCleanArchitecture.Repository.Products;
 
 namespace NLayerCleanArchitecture.Service.Products;
-
-public class ProductService(IProductRepository productRepository) : IProductService
+//CLEAN KOD ANALİZİ
+//Fast Fail ile önce olumsuz durum hedef alınarak hızlı dönül yapılır, edge case'ler her daim önce
+//Guard clauses ile if() ile her şeyi yaz, sonra düzgünce kodu yaz!
+//Cyclomatic complexity olabildiğince düşük olmalı
+//Command, strategy design pattern, decorator, adaptor gibi araçlarla if clause'lardan kurtulunabilir
+public class ProductService(IProductRepository productRepository, IUnitOfWork unitOfWork) : IProductService
 {
-    public async Task<ServiceResult<List<Product>>> GetMostExpensiveProductsAsync(int count)
+    public async Task<ServiceResult<List<ProductResponseDto>>> GetMostExpensiveProductsAsync(int count)
     {
         var products = await productRepository.GetMostExpensiveProductsAsync(count);
-        return ServiceResult<List<Product>>.Success(products);
+        var productsAsDto = products.Select(product => new ProductResponseDto(product.Id, product.Name, product.Description, product.Price, product.Stock)).ToList();
+        return ServiceResult<List<ProductResponseDto>>.Success(productsAsDto);
     }
 
-    public async Task<ServiceResult<Product>> GetProductById(int id)
+    public async Task<ServiceResult<ProductResponseDto>> GetProductById(int id)
     {
         var product = await productRepository.GetByIdAsync(id);
+        var productAsDto = new ProductResponseDto(product.Id, product.Name, product.Description, product.Price, product.Stock);
         if (product == null)
         {
-            return ServiceResult<Product>.Fail("Product not found",HttpStatusCode.NotFound);
+            return ServiceResult<ProductResponseDto>.Fail("Product not found",HttpStatusCode.NotFound);
         }
-        return ServiceResult<Product>.Success(product);
+        return ServiceResult<ProductResponseDto>.Success(productAsDto);
+    }
+
+    public async Task<ServiceResult<ProductCreateResponseDto>> CreateProductAsync(ProductCreateRequestDto productCreateRequestDto)
+    {
+        var product = new Product()
+        {
+            Name = productCreateRequestDto.Name,
+            Description = productCreateRequestDto.Description,
+            Price = productCreateRequestDto.Price,
+            Stock = productCreateRequestDto.Stock
+        };
+        await productRepository.AddAsync(product);
+        await unitOfWork.SaveChangesAsync();
+        return ServiceResult<ProductCreateResponseDto>.Success(new  ProductCreateResponseDto(product.Id));
+    }
+
+    public async Task<ServiceResult> UpdateProductAsync(int id, ProductUpdateRequestDto productUpdateRequestDto)
+    {
+        var product = await productRepository.GetByIdAsync(id);
+        if (product is null)
+        {
+            return ServiceResult.Fail("Product not found");
+        }
+        product.Name = productUpdateRequestDto.Name;
+        product.Price = productUpdateRequestDto.Price;
+        product.Description = productUpdateRequestDto.Description;
+        product.Stock = productUpdateRequestDto.Stock;
+        return ServiceResult.Success();
+    }
+
+    public async Task<ServiceResult> DeleteProductAsync(int id)
+    {
+        var product = await productRepository.GetByIdAsync(id);
+        if (product is null)
+        {
+            return ServiceResult.Fail("Product not found");
+        }
+        productRepository.Delete(product);
+        await unitOfWork.SaveChangesAsync();
+        return ServiceResult.Success();
     }
 }
