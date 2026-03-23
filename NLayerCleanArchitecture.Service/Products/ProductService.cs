@@ -1,4 +1,5 @@
 using System.Net;
+using Microsoft.EntityFrameworkCore;
 using NLayerCleanArchitecture.Repository;
 using NLayerCleanArchitecture.Repository.Products;
 
@@ -17,15 +18,23 @@ public class ProductService(IProductRepository productRepository, IUnitOfWork un
         return ServiceResult<List<ProductResponseDto>>.Success(productsAsDto);
     }
 
-    public async Task<ServiceResult<ProductResponseDto>> GetProductById(int id)
+    //null yerine boş liste dön. null dönme
+    public async Task<ServiceResult<List<ProductResponseDto>>> GetAllProductAsync()
+    {
+        var products = await productRepository.GetAll().ToListAsync();
+        var productsAsDto = products.Select(x => new ProductResponseDto(x.Id, x.Name, x.Description, x.Price, x.Stock)).ToList();
+        return ServiceResult<List<ProductResponseDto>>.Success(productsAsDto);
+    }
+
+    public async Task<ServiceResult<ProductResponseDto?>> GetProductByIdAsync(int id)
     {
         var product = await productRepository.GetByIdAsync(id);
-        var productAsDto = new ProductResponseDto(product.Id, product.Name, product.Description, product.Price, product.Stock);
         if (product == null)
         {
             return ServiceResult<ProductResponseDto>.Fail("Product not found",HttpStatusCode.NotFound);
         }
-        return ServiceResult<ProductResponseDto>.Success(productAsDto);
+        var productAsDto = new ProductResponseDto(product.Id, product.Name, product.Description, product.Price, product.Stock);
+        return ServiceResult<ProductResponseDto>.Success(productAsDto)!;
     }
 
     public async Task<ServiceResult<ProductCreateResponseDto>> CreateProductAsync(ProductCreateRequestDto productCreateRequestDto)
