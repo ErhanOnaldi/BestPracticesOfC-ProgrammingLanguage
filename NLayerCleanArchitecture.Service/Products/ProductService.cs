@@ -26,6 +26,13 @@ public class ProductService(IProductRepository productRepository, IUnitOfWork un
         return ServiceResult<List<ProductResponseDto>>.Success(productsAsDto);
     }
 
+    public async Task<ServiceResult<List<ProductResponseDto>>> GetPagedProductsAsync(int pageNumber, int pageSize)
+    {
+        var products = await productRepository.GetAll().Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
+        var productsAsDto = products.Select(x => new ProductResponseDto(x.Id, x.Name, x.Description, x.Price, x.Stock)).ToList();
+        return ServiceResult<List<ProductResponseDto>>.Success(productsAsDto);
+    }
+
     public async Task<ServiceResult<ProductResponseDto?>> GetProductByIdAsync(int id)
     {
         var product = await productRepository.GetByIdAsync(id);
@@ -37,6 +44,7 @@ public class ProductService(IProductRepository productRepository, IUnitOfWork un
         return ServiceResult<ProductResponseDto>.Success(productAsDto)!;
     }
 
+    //201 dönülürse, oluşturulan nesneye nasıl gidileceği response içinde dönülebilir. URL verilir.
     public async Task<ServiceResult<ProductCreateResponseDto>> CreateProductAsync(ProductCreateRequestDto productCreateRequestDto)
     {
         var product = new Product()
@@ -48,7 +56,7 @@ public class ProductService(IProductRepository productRepository, IUnitOfWork un
         };
         await productRepository.AddAsync(product);
         await unitOfWork.SaveChangesAsync();
-        return ServiceResult<ProductCreateResponseDto>.Success(new ProductCreateResponseDto(product.Id), HttpStatusCode.Created);
+        return ServiceResult<ProductCreateResponseDto>.SuccessAsCreated(new ProductCreateResponseDto(product.Id), $"api/product/{product.Id}");
     }
 
     public async Task<ServiceResult> UpdateProductAsync(int id, ProductUpdateRequestDto productUpdateRequestDto)
@@ -62,6 +70,19 @@ public class ProductService(IProductRepository productRepository, IUnitOfWork un
         product.Price = productUpdateRequestDto.Price;
         product.Description = productUpdateRequestDto.Description;
         product.Stock = productUpdateRequestDto.Stock;
+        return ServiceResult.Success(HttpStatusCode.NoContent);
+    }
+
+    public async Task<ServiceResult> UpdateStockAsync(ProductUpdateStockRequestDto productUpdateStockRequestDto)
+    {
+        var product = await productRepository.GetByIdAsync(productUpdateStockRequestDto.ProductId);
+        if (product is null)
+        {
+            return ServiceResult.Fail("Product not found");
+        }
+        product.Stock = productUpdateStockRequestDto.Quantity;
+        productRepository.Update(product);
+        await unitOfWork.SaveChangesAsync();
         return ServiceResult.Success(HttpStatusCode.NoContent);
     }
 

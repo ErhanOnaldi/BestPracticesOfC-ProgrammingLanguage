@@ -8,16 +8,24 @@ public class ServiceResult
     public List<string>? ErrorMessages { get; set; }
     [JsonIgnore]
     public bool IsSuccess => ErrorMessages == null || ErrorMessages.Count == 0;
-    [JsonIgnore]
-    public bool IsFail => !IsSuccess ;
-    [JsonIgnore]
-    public HttpStatusCode Status { get; set; } 
+    [JsonIgnore] public bool IsFail => !IsSuccess ;
+    [JsonIgnore] public HttpStatusCode Status { get; set; } 
+    [JsonIgnore] public string? UrlAsCreated { get; set; }
 
     public static ServiceResult Success(HttpStatusCode status = HttpStatusCode.OK)
     {
         return new ServiceResult
         {
             Status = status,
+        };
+    }
+    
+    public static ServiceResult SuccessAsCreated(string url)
+    {
+        return new ServiceResult
+        {
+            Status = HttpStatusCode.Created,
+            UrlAsCreated = url
         };
     }
     public static ServiceResult Fail(List<string> errorMessages, HttpStatusCode status= HttpStatusCode.BadRequest)
@@ -49,6 +57,7 @@ public class ServiceResult<T>
     public bool IsFail => !IsSuccess ;
     [JsonIgnore]
     public HttpStatusCode Status { get; set; } 
+    [JsonIgnore] public string? UrlAsCreated { get; set; }
 
     public static ServiceResult<T> Success(T data, HttpStatusCode status= HttpStatusCode.OK)
     {
@@ -56,6 +65,15 @@ public class ServiceResult<T>
         {
             Data = data,
             Status = status,
+        };
+    }
+    public static ServiceResult<T> SuccessAsCreated(T data, string url)
+    {
+        return new ServiceResult<T>
+        {
+            Data = data,
+            Status = HttpStatusCode.Created,
+            UrlAsCreated = url
         };
     }
     public static ServiceResult<T> Fail(List<string> errorMessages, HttpStatusCode status= HttpStatusCode.BadRequest)
