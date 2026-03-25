@@ -2,6 +2,7 @@ using System.Reflection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using FluentValidation;
+using NLayerCleanArchitecture.Service.ExceptionHandlers;
 using NLayerCleanArchitecture.Service.Products;
 
 namespace NLayerCleanArchitecture.Service.Extensions;
@@ -14,6 +15,8 @@ public static class ServiceExtensions
         
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
         services.AddAutoMapper(cfg => { }, Assembly.GetExecutingAssembly());
+        services.AddExceptionHandler<CriticalExceptionHandler>();
+        services.AddExceptionHandler<GlobalExceptionHandler>();
         return services;
     }
     
