@@ -1,6 +1,6 @@
 using FluentValidation;
 
-namespace NLayerCleanArchitecture.Service.Products;
+namespace NLayerCleanArchitecture.Service.Products.Create;
 
 public class ProductCreateRequestDtoValidator : AbstractValidator<ProductCreateRequestDto>
 {

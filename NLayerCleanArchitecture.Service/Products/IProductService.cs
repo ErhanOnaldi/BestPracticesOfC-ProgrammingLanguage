@@ -1,4 +1,6 @@
 using NLayerCleanArchitecture.Repository.Products;
+using NLayerCleanArchitecture.Service.Products.Create;
+using NLayerCleanArchitecture.Service.Products.Update;
 
 namespace NLayerCleanArchitecture.Service.Products;
 

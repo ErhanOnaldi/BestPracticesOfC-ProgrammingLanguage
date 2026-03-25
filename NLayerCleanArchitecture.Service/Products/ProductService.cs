@@ -1,7 +1,10 @@
 using System.Net;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using NLayerCleanArchitecture.Repository;
 using NLayerCleanArchitecture.Repository.Products;
+using NLayerCleanArchitecture.Service.Products.Create;
+using NLayerCleanArchitecture.Service.Products.Update;
 
 namespace NLayerCleanArchitecture.Service.Products;
 //CLEAN KOD ANALİZİ
@@ -9,7 +12,7 @@ namespace NLayerCleanArchitecture.Service.Products;
 //Guard clauses ile if() ile her şeyi yaz, sonra düzgünce kodu yaz!
 //Cyclomatic complexity olabildiğince düşük olmalı
 //Command, strategy design pattern, decorator, adaptor gibi araçlarla if clause'lardan kurtulunabilir
-public class ProductService(IProductRepository productRepository, IUnitOfWork unitOfWork) : IProductService
+public class ProductService(IProductRepository productRepository, IUnitOfWork unitOfWork, IMapper mapper) : IProductService
 {
     public async Task<ServiceResult<List<ProductResponseDto>>> GetMostExpensiveProductsAsync(int count)
     {
@@ -22,7 +25,8 @@ public class ProductService(IProductRepository productRepository, IUnitOfWork un
     public async Task<ServiceResult<List<ProductResponseDto>>> GetAllProductAsync()
     {
         var products = await productRepository.GetAll().ToListAsync();
-        var productsAsDto = products.Select(x => new ProductResponseDto(x.Id, x.Name, x.Description, x.Price, x.Stock)).ToList();
+        // var productsAsDto = products.Select(x => new ProductResponseDto(x.Id, x.Name, x.Description, x.Price, x.Stock)).ToList();
+        var productsAsDto = mapper.Map<List<ProductResponseDto>>(products);
         return ServiceResult<List<ProductResponseDto>>.Success(productsAsDto);
     }
 
@@ -38,7 +42,7 @@ public class ProductService(IProductRepository productRepository, IUnitOfWork un
         var product = await productRepository.GetByIdAsync(id);
         if (product == null)
         {
-            return ServiceResult<ProductResponseDto>.Fail("Product not found",HttpStatusCode.NotFound);
+            return ServiceResult<ProductResponseDto?>.Fail("Product not found",HttpStatusCode.NotFound);
         }
         var productAsDto = new ProductResponseDto(product.Id, product.Name, product.Description, product.Price, product.Stock);
         return ServiceResult<ProductResponseDto>.Success(productAsDto)!;

@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using NLayerCleanArchitecture.Service.Products;
+using NLayerCleanArchitecture.Service.Products.Create;
+using NLayerCleanArchitecture.Service.Products.Update;
 
 //Endpoint name api/products şeklinde olmalı.
 namespace NLayerCleanArchitecture.API.Controllers;
