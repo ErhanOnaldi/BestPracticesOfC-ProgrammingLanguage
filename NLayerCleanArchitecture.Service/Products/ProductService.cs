@@ -19,7 +19,9 @@ public class ProductService(IProductRepository productRepository, IUnitOfWork un
     public async Task<ServiceResult<List<ProductResponseDto>>> GetMostExpensiveProductsAsync(int count)
     {
         var products = await productRepository.GetMostExpensiveProductsAsync(count);
-        var productsAsDto = products.Select(product => new ProductResponseDto(product.Id, product.Name, product.Description, product.Price, product.Stock)).ToList();
+        
+        // var productsAsDto = products.Select(product => new ProductResponseDto(product.Id, product.Name, product.Description, product.Price, product.Stock)).ToList();
+        var productsAsDto = mapper.Map<List<ProductResponseDto>>(products);
         return ServiceResult<List<ProductResponseDto>>.Success(productsAsDto);
     }
 
@@ -59,13 +61,7 @@ public class ProductService(IProductRepository productRepository, IUnitOfWork un
         {
             return ServiceResult<ProductCreateResponseDto>.Fail("Product already exist as same name");
         }
-        var product = new Product()
-        {
-            Name = productCreateRequestDto.Name,
-            Description = productCreateRequestDto.Description,
-            Price = productCreateRequestDto.Price,
-            Stock = productCreateRequestDto.Stock
-        };
+        var product = mapper.Map<Product>(productCreateRequestDto);
         await productRepository.AddAsync(product);
         await unitOfWork.SaveChangesAsync();
         return ServiceResult<ProductCreateResponseDto>.SuccessAsCreated(new ProductCreateResponseDto(product.Id), $"api/product/{product.Id}");
@@ -83,11 +79,9 @@ public class ProductService(IProductRepository productRepository, IUnitOfWork un
         {
             return ServiceResult.Fail("Product already exist as same name");
         }
+        //jenerik değil, o yüzden normal parametre olarak verilebilir.
+        product = mapper.Map(productUpdateRequestDto,product);
         
-        product.Name = productUpdateRequestDto.Name;
-        product.Price = productUpdateRequestDto.Price;
-        product.Description = productUpdateRequestDto.Description;
-        product.Stock = productUpdateRequestDto.Stock;
         return ServiceResult.Success(HttpStatusCode.NoContent);
     }
 
