@@ -5,6 +5,7 @@ using NLayerCleanArchitecture.Repository;
 using NLayerCleanArchitecture.Repository.Products;
 using NLayerCleanArchitecture.Service.Products.Create;
 using NLayerCleanArchitecture.Service.Products.Update;
+using NLayerCleanArchitecture.Service.Products.UpdateStock;
 
 namespace NLayerCleanArchitecture.Service.Products;
 //CLEAN KOD ANALİZİ
@@ -12,6 +13,7 @@ namespace NLayerCleanArchitecture.Service.Products;
 //Guard clauses ile if() ile her şeyi yaz, sonra düzgünce kodu yaz!
 //Cyclomatic complexity olabildiğince düşük olmalı
 //Command, strategy design pattern, decorator, adaptor gibi araçlarla if clause'lardan kurtulunabilir
+//Dinamik validasyonları (başka API'Ye gitme, veritabanına gitme vesaire) business katmanında yapıyoruz.
 public class ProductService(IProductRepository productRepository, IUnitOfWork unitOfWork, IMapper mapper) : IProductService
 {
     public async Task<ServiceResult<List<ProductResponseDto>>> GetMostExpensiveProductsAsync(int count)
@@ -76,6 +78,12 @@ public class ProductService(IProductRepository productRepository, IUnitOfWork un
         {
             return ServiceResult.Fail("Product not found");
         }
+        var isInDb = await productRepository.Where(x => x.Name == productUpdateRequestDto.Name && x.Id != product.Id).AnyAsync();
+        if (isInDb)
+        {
+            return ServiceResult.Fail("Product already exist as same name");
+        }
+        
         product.Name = productUpdateRequestDto.Name;
         product.Price = productUpdateRequestDto.Price;
         product.Description = productUpdateRequestDto.Description;
