@@ -1,5 +1,6 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using FluentValidation;
 using NLayerCleanArchitecture.Service.Products;
 
 namespace NLayerCleanArchitecture.Service.Extensions;

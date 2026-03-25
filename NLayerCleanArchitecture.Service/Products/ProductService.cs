@@ -47,6 +47,12 @@ public class ProductService(IProductRepository productRepository, IUnitOfWork un
     //201 dönülürse, oluşturulan nesneye nasıl gidileceği response içinde dönülebilir. URL verilir.
     public async Task<ServiceResult<ProductCreateResponseDto>> CreateProductAsync(ProductCreateRequestDto productCreateRequestDto)
     {
+        //SERVICE METODUNDA VALIDATION, EN KOLAY VE EN PERFORMANSLI 
+        var isInDb = await productRepository.Where(x => x.Name == productCreateRequestDto.Name).AnyAsync();
+        if (isInDb)
+        {
+            return ServiceResult<ProductCreateResponseDto>.Fail("Product already exist as same name");
+        }
         var product = new Product()
         {
             Name = productCreateRequestDto.Name,

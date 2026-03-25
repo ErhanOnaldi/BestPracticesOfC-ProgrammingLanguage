@@ -13,8 +13,8 @@ public class CustomBaseController : ControllerBase
         return result.Status switch
         {
             HttpStatusCode.NoContent => NoContent(),
-            HttpStatusCode.Created => Created(result.UrlAsCreated, result.Data),
-            _ => new ObjectResult(result.Data) { StatusCode = result.Status.GetHashCode() }
+            HttpStatusCode.Created => Created(result.UrlAsCreated, result),
+            _ => new ObjectResult(result) { StatusCode = result.Status.GetHashCode() }
         };
     }
     [NonAction]
