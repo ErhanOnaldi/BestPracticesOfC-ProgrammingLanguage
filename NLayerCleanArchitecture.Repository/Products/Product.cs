@@ -1,5 +1,5 @@
 namespace NLayerCleanArchitecture.Repository.Products;
-
+using NLayerCleanArchitecture.Repository.Category;
 public class Product
 {
     public int Id { get; set; }
@@ -7,4 +7,7 @@ public class Product
     public string? Description { get; set; }
     public decimal Price { get; set; }
     public int Stock { get; set; }
+    public Category Category { get; set; } = null!;
+    public int CategoryId { get; set; }
+    
 }
