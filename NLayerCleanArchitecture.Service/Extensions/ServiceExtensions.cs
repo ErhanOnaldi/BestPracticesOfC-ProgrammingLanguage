@@ -2,6 +2,7 @@ using System.Reflection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using FluentValidation;
+using NLayerCleanArchitecture.Repository.Category;
 using NLayerCleanArchitecture.Service.ExceptionHandlers;
 using NLayerCleanArchitecture.Service.Products;
 
@@ -12,6 +13,7 @@ public static class ServiceExtensions
     public static IServiceCollection AddServices(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddScoped<IProductService, ProductService>();
+        services.AddScoped<ICategoryRepository, CategoryRepository>();
         
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
         services.AddAutoMapper(cfg => { }, Assembly.GetExecutingAssembly());
