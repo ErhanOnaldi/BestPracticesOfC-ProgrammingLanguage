@@ -80,8 +80,8 @@ public class ProductService(IProductRepository productRepository, IUnitOfWork un
             return ServiceResult.Fail("Product already exist as same name");
         }
         //jenerik değil, o yüzden normal parametre olarak verilebilir.
-        product = mapper.Map(productUpdateRequestDto,product);
-        
+        productRepository.Update(product);
+        await unitOfWork.SaveChangesAsync();
         return ServiceResult.Success(HttpStatusCode.NoContent);
     }
 

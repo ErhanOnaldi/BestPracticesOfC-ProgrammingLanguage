@@ -22,6 +22,8 @@ builder.Services.Configure<ApiBehaviorOptions>(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddProblemDetails();
+
 builder.Services.AddRepositories(builder.Configuration).AddServices(builder.Configuration);
 
 var app = builder.Build();
