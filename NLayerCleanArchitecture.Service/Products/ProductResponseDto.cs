@@ -1,6 +1,6 @@
 namespace NLayerCleanArchitecture.Service.Products;
 
-public record ProductResponseDto(int Id, string Name, string? Description, decimal Price, int Stock);
+public record ProductResponseDto(int Id, string Name, string? Description, decimal Price, int Stock, int CategoryId);
 //mümjün olduğunca immutable olmalı
 
     // public int Id { get; init; }

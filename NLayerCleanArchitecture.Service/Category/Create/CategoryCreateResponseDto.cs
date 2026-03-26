@@ -1,3 +1,3 @@
 namespace NLayerCleanArchitecture.Service.Category.Create;
 
-public class CategoryCreateResponseDto(int Id);
+public record CategoryCreateResponseDto(int Id);

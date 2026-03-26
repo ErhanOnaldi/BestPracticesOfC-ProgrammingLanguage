@@ -37,7 +37,7 @@ public class ProductService(IProductRepository productRepository, IUnitOfWork un
     public async Task<ServiceResult<List<ProductResponseDto>>> GetPagedProductsAsync(int pageNumber, int pageSize)
     {
         var products = await productRepository.GetAll().Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
-        var productsAsDto = products.Select(x => new ProductResponseDto(x.Id, x.Name, x.Description, x.Price, x.Stock)).ToList();
+        var productsAsDto = products.Select(x => new ProductResponseDto(x.Id, x.Name, x.Description, x.Price, x.Stock,x.CategoryId)).ToList();
         return ServiceResult<List<ProductResponseDto>>.Success(productsAsDto);
     }
 
@@ -48,7 +48,7 @@ public class ProductService(IProductRepository productRepository, IUnitOfWork un
         {
             return ServiceResult<ProductResponseDto?>.Fail("Product not found",HttpStatusCode.NotFound);
         }
-        var productAsDto = new ProductResponseDto(product.Id, product.Name, product.Description, product.Price, product.Stock);
+        var productAsDto = new ProductResponseDto(product.Id, product.Name, product.Description, product.Price, product.Stock, product.CategoryId);
         return ServiceResult<ProductResponseDto>.Success(productAsDto)!;
     }
 

@@ -57,12 +57,12 @@ public class CategoryService(ICategoryRepository categoryRepository, IUnitOfWork
         var isInDb = await categoryRepository.Where(x => x.Name == categoryCreateRequestDto.Name).AnyAsync();
         if (isInDb)
         {
-            return ServiceResult<CategoryCreateResponseDto>.Fail("Product already exist as same name");
+            return ServiceResult<CategoryCreateResponseDto>.Fail("Category already exists with the same name");
         }
         var entity = mapper.Map<Repository.Category.Category>(categoryCreateRequestDto);
         await categoryRepository.AddAsync(entity);
         await unitOfWork.SaveChangesAsync();
-        return ServiceResult<CategoryCreateResponseDto>.SuccessAsCreated(new CategoryCreateResponseDto(entity.Id), $"api/product/{entity.Id}");
+        return ServiceResult<CategoryCreateResponseDto>.SuccessAsCreated(new CategoryCreateResponseDto(entity.Id), $"api/categories/{entity.Id}");
     }
     public async Task<ServiceResult> UpdateCategoryAsync(int id, CategoryUpdateRequestDto categoryUpdateRequestDto)
     {
@@ -84,12 +84,12 @@ public class CategoryService(ICategoryRepository categoryRepository, IUnitOfWork
     }
     public async Task<ServiceResult> DeleteCategoryAsync(int id)
     {
-        var product = await categoryRepository.GetByIdAsync(id);
-        if (product is null)
+        var category = await categoryRepository.GetByIdAsync(id);
+        if (category is null)
         {
-            return ServiceResult.Fail("Product not found");
+            return ServiceResult.Fail("Category not found");
         }
-        categoryRepository.Delete(product);
+        categoryRepository.Delete(category);
         await unitOfWork.SaveChangesAsync();
         return ServiceResult.Success(HttpStatusCode.NoContent);
     }

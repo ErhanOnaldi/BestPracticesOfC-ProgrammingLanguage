@@ -10,6 +10,8 @@ public class ProductCreateRequestDtoValidator : AbstractValidator<ProductCreateR
         RuleFor(x => x.Description).NotNull().NotEmpty().WithMessage("Description is required");
         RuleFor(x => x.Price).NotNull().NotEmpty();
         RuleFor(x => x.Price).InclusiveBetween(0,100).NotNull();
+        RuleFor(x => x.Stock).NotNull().NotEmpty();
+        RuleFor(x => x.CategoryId).NotNull().NotEmpty();
     }
     
     

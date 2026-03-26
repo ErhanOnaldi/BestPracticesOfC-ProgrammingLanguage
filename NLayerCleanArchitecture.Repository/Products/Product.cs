@@ -1,6 +1,6 @@
 namespace NLayerCleanArchitecture.Repository.Products;
 using NLayerCleanArchitecture.Repository.Category;
-public class Product
+public class Product : IAuditEntity
 {
     public int Id { get; set; }
     public string Name { get; set; } = null!;
@@ -9,5 +9,7 @@ public class Product
     public int Stock { get; set; }
     public Category Category { get; set; } = null!;
     public int CategoryId { get; set; }
-    
+
+    public DateTime Created { get; set; }
+    public DateTime Updated { get; set; }
 }
