@@ -8,6 +8,8 @@ public class GenericRepository<T>(AppDbContext dbContext):IGenericRepository<T> 
     protected readonly AppDbContext DbContext = dbContext;
     private readonly DbSet<T> _dbSet = dbContext.Set<T>();
     
+    public Task<bool> AnyAsync(Expression<Func<T, bool>> predicate) => _dbSet.AnyAsync(predicate);
+    
     public IQueryable<T> GetAll() => _dbSet.AsQueryable().AsNoTracking();
 
     public IQueryable<T> Where(Expression<Func<T, bool>> predicate) => _dbSet.Where(predicate).AsQueryable().AsNoTracking();
