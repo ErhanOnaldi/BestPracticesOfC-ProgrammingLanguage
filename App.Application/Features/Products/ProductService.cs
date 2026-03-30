@@ -3,6 +3,7 @@ using App.Application.Features.Products.Create;
 using App.Application.Features.Products.Dto;
 using App.Application.Features.Products.Update;
 using App.Application.Features.Products.UpdateStock;
+using App.Application.Interfaces.Caching;
 using App.Application.Interfaces.Persistence;
 using App.Application.Interfaces.Persistence.Product;
 using App.Domain.Entities;
@@ -15,8 +16,9 @@ namespace App.Application.Features.Products;
 //Cyclomatic complexity olabildiğince düşük olmalı
 //Command, strategy design pattern, decorator, adaptor gibi araçlarla if clause'lardan kurtulunabilir
 //Dinamik validasyonları (başka API'Ye gitme, veritabanına gitme vesaire) business katmanında yapıyoruz.
-public class ProductService(IProductRepository productRepository, IUnitOfWork unitOfWork, IMapper mapper) : IProductService
+public class ProductService(IProductRepository productRepository, IUnitOfWork unitOfWork, IMapper mapper, ICacheService cacheService) : IProductService
 {
+    private const string ProductListKey = "ProductList";
     public async Task<ServiceResult<List<ProductResponseDto>>> GetMostExpensiveProductsAsync(int count)
     {
         var products = await productRepository.GetMostExpensiveProductsAsync(count);
@@ -29,9 +31,21 @@ public class ProductService(IProductRepository productRepository, IUnitOfWork un
     //null yerine boş liste dön. null dönme
     public async Task<ServiceResult<List<ProductResponseDto>>> GetAllProductAsync()
     {
+        //Cache aside pattern
+        //1. Cache içinde yoksa db içinde vardır, önce cache sonra db, 3. adımda da datayı cache içine at 
+
+        var isCached = await cacheService.GetAsync<List<ProductResponseDto>>(ProductListKey);
+        if (isCached is not null)
+        {
+            return ServiceResult<List<ProductResponseDto>>.Success(isCached);
+        }
+        
         var products = await productRepository.GetAllAsync();
         // var productsAsDto = products.Select(x => new ProductResponseDto(x.Id, x.Name, x.Description, x.Price, x.Stock)).ToList();
         var productsAsDto = mapper.Map<List<ProductResponseDto>>(products);
+        //Cache içinde bulamadıki dbden getirip sonradan ekledik, 
+        //BUNUN YERİNE DECORATOR VEYA PROXY DESIGN PATTERN İLE DAHA SAĞLIKLI KOD YAZILABİLİR
+        await cacheService.AddAsync(ProductListKey, productsAsDto, TimeSpan.FromMinutes(1));
         return ServiceResult<List<ProductResponseDto>>.Success(productsAsDto);
     }
 
