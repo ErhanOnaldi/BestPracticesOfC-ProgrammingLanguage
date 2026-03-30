@@ -6,7 +6,9 @@ using App.Application.Features.Products.UpdateStock;
 using App.Application.Interfaces.Caching;
 using App.Application.Interfaces.Persistence;
 using App.Application.Interfaces.Persistence.Product;
+using App.Application.Interfaces.ServiceBus;
 using App.Domain.Entities;
+using App.Domain.Event;
 using AutoMapper;
 
 namespace App.Application.Features.Products;
@@ -16,7 +18,7 @@ namespace App.Application.Features.Products;
 //Cyclomatic complexity olabildiğince düşük olmalı
 //Command, strategy design pattern, decorator, adaptor gibi araçlarla if clause'lardan kurtulunabilir
 //Dinamik validasyonları (başka API'Ye gitme, veritabanına gitme vesaire) business katmanında yapıyoruz.
-public class ProductService(IProductRepository productRepository, IUnitOfWork unitOfWork, IMapper mapper, ICacheService cacheService) : IProductService
+public class ProductService(IProductRepository productRepository, IUnitOfWork unitOfWork, IMapper mapper, ICacheService cacheService, IServiceBus serviceBus) : IProductService
 {
     private const string ProductListKey = "ProductList";
     public async Task<ServiceResult<List<ProductResponseDto>>> GetMostExpensiveProductsAsync(int count)
@@ -79,6 +81,9 @@ public class ProductService(IProductRepository productRepository, IUnitOfWork un
         var product = mapper.Map<Product>(productCreateRequestDto);
         await productRepository.AddAsync(product);
         await unitOfWork.SaveChangesAsync();
+
+        await serviceBus.PublishAsync(new ProductAddEvent(product.Id, product.Name, product.Price));
+        
         return ServiceResult<ProductCreateResponseDto>.SuccessAsCreated(new ProductCreateResponseDto(product.Id), $"api/product/{product.Id}");
     }
 
