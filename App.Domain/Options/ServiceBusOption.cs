@@ -1,6 +1,6 @@
 namespace App.Domain.Options;
 
-public class ServiceBusOptions
+public class ServiceBusOption
 {
     public string Url { get; set; } = null!;
     
