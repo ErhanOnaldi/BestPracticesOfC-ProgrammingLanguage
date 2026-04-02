@@ -11,6 +11,7 @@ public static class SwaggerExtensions
         return services;
     }
 
+    //middle ware itself!
     public static IApplicationBuilder UseSwaggerExtension(this IApplicationBuilder app)
     {
         app.UseSwagger();

@@ -13,7 +13,6 @@ public class CriticalExceptionHandler : IExceptionHandler
         if (exception is CriticalException)
         {
             Console.WriteLine($"Critical error: {exception.Message}");
-            
         }
         
         return ValueTask.FromResult(false);

@@ -1,4 +1,5 @@
 using System.Net;
+
 using System.Text.Json.Serialization;
 
 namespace App.Application;
@@ -20,14 +21,6 @@ public class ServiceResult
         };
     }
     
-    public static ServiceResult SuccessAsCreated(string url)
-    {
-        return new ServiceResult
-        {
-            Status = HttpStatusCode.Created,
-            UrlAsCreated = url
-        };
-    }
     public static ServiceResult Fail(List<string> errorMessages, HttpStatusCode status= HttpStatusCode.BadRequest)
     {
         return new ServiceResult

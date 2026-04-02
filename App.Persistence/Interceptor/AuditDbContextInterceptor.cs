@@ -14,14 +14,14 @@ public class AuditDbContextInterceptor : SaveChangesInterceptor
 
     private static void ModifiedBehaviour(DbContext context, IAuditEntity auditEntity)
     {
-        auditEntity.Created = DateTime.Now;
-        context.Entry(auditEntity).Property(x =>x.Updated).IsModified = false;
+        auditEntity.Updated = DateTime.Now;
+        context.Entry(auditEntity).Property(x =>x.Created).IsModified = false;
     }
 
     private static void AddBehaviour(DbContext context, IAuditEntity auditEntity)
     {
         auditEntity.Created = DateTime.Now;
-        context.Entry(auditEntity).Property(x =>x.Created).IsModified = false;
+        context.Entry(auditEntity).Property(x =>x.Updated).IsModified = false;
     }
 
     public override ValueTask<InterceptionResult<int>> SavingChangesAsync(DbContextEventData eventData, InterceptionResult<int> result,
